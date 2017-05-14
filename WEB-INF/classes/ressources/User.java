@@ -39,6 +39,4 @@ public class User {
 	public void setMdp(String mdp) {
 		this.mdp = mdp;
 	}
-
-	
 }

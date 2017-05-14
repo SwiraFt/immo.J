@@ -4,28 +4,20 @@ import java.sql.Date;
 
 public class Appartement {
 	
-	private int numéro;
+
 	private String typeAppart;
 	private String adresse;
 	private float montantVente;
 	private Date datePublication;
 	private String loginProp;
 	
-	public Appartement(int numéro, String typeAppart, String adresse, float montantVente, Date datePublication, String loginProp) {
-		this.numéro = numéro;
+	public Appartement(String typeAppart, String adresse, float montantVente, Date datePublication, String loginProp) {
+
 		this.typeAppart = typeAppart;
 		this.adresse = adresse;
 		this.montantVente = montantVente;
 		this.datePublication = datePublication;
 		this.loginProp = loginProp;
-	}
-
-	public int getNuméro() {
-		return numéro;
-	}
-
-	public void setNuméro(int numéro) {
-		this.numéro = numéro;
 	}
 
 	public String getTypeAppart() {

@@ -19,7 +19,7 @@ public class AppartementDataModel {
 		PreparedStatement statement = null;
 				
 		try {
-			statement = connect.prepareStatement("SELECT * FROM APPARTEMENTS WHERE Numero = ?");
+			statement = connect.prepareStatement("SELECT * FROM APPARTEMENTS WHERE numero = ?");
 			
 			statement.setInt(1, numéro);
 			
@@ -27,7 +27,7 @@ public class AppartementDataModel {
 			
  
 			if( res.next()){
-				return new Appartement(res.getInt("Numero"), res.getString("TypeAppart"), res.getString("Adresse"), res.getFloat("MontentVente"), res.getDate("DatePublication"), res.getString("LoginProp"));
+				return new Appartement(res.getString("TypeAppart"), res.getString("Adresse"), res.getFloat("MontantVente"), res.getDate("DatePublication"), res.getString("LoginProp"));
 			}
 			
 		} catch (SQLException e) {
@@ -42,7 +42,7 @@ public class AppartementDataModel {
 		PreparedStatement statement = null;		
 		
 		try {
-			statement = connect.prepareStatement("INSERT INTO APPARTEMENT VALUES( NUMERO_APPART.NEXTVAL , ? , ? , ? , ?, ? )");
+			statement = connect.prepareStatement("INSERT INTO APPARTEMENTS VALUES(NUMERO_APPART.NEXTVAL, ? , ? , ? , ?, ? )");
 
 			statement.setString(1, appartement.getTypeAppart());
 			statement.setString(2, appartement.getAdresse());
@@ -56,7 +56,7 @@ public class AppartementDataModel {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new DataBaseException("Impossible d'ajouter l'appartement n° " + appartement.getNuméro() + " à la base de données." );
+			throw new DataBaseException("Impossible d'ajouter l'appartement à la base de données." );
 		}
 
 
