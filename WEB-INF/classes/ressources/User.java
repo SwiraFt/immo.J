@@ -7,16 +7,13 @@ public class User {
 	
 	private String mdp;
 	
-	private String email;
-	
 	
 
-	public User(String nom, String login, String mdp, String email) {
+	public User(String nom, String login, String mdp) {
 		super();
 		this.nom = nom;
 		this.login = login;
 		this.mdp = mdp;
-		this.email = email;
 	}
 
 	public String getNom() {
@@ -43,13 +40,5 @@ public class User {
 		this.mdp = mdp;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
 	
 }

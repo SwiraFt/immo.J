@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="H:/COMMUN/DUT 2ème année/Apprentissage/AppWebJava/tp 2 tomcat/javax.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Amin/Documents/javax.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Amin/Documents/Projet IUT et TP/Apprentissage/ProjetJEE/apache-tomcat/lib/ojdbc6.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

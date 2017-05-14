@@ -9,31 +9,19 @@ import java.sql.SQLException;
 import exceptions.DataBaseException;
 import ressources.User;
 
-public class UserDataModel implements UserData {
-	
+public class UserDataModel {
+		
 	private Connection connect;
 	
-	
 	public UserDataModel(){
-		try {
-			Class.forName("oracle.jdbc.OracleDriver");
-		} catch (ClassNotFoundException e) {
-			System.err.println("Impossible de trouver le driver de connexion à la base de données.");
-			e.printStackTrace();
-		}
-		
-		try {
-			connect = DriverManager.getConnection("jdbc:oracle:thin:@vs-oracle2:1521:ORCL", "GHELISA", "GHELISA");
-		} catch (SQLException e) {
-			System.err.println("Impossible de se connecter à la base de données.");
-			e.printStackTrace();
-		}
-		
+			this. connect = ConnectionSingleton.getConnection();
 	}
 
 	public User get(String login) {
+		PreparedStatement statement = null;
+				
 		try {
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM PROPRIETAIRES WHERE login = ?");
+			statement = connect.prepareStatement("SELECT * FROM PROPRIETAIRES WHERE login = ?");
 			
 			statement.setString(1, login);
 			
@@ -41,7 +29,7 @@ public class UserDataModel implements UserData {
 			
  
 			if( res.next()){
-				return new User(res.getString("Nom"), res.getString("Login"), res.getString("Mdp"), res.getString("Email"));
+				return new User(res.getString("Nom"), res.getString("Login"), res.getString("Mdp"));
 			}
 			
 		} catch (SQLException e) {
@@ -56,17 +44,19 @@ public class UserDataModel implements UserData {
 		PreparedStatement statement = null;		
 		
 		try {
-			statement = connect.prepareStatement("INSERT INTO TABLE PROPRIETAIRES VALUES( ? , ? , ? , ?");
+			statement = connect.prepareStatement("INSERT INTO PROPRIETAIRES VALUES( ? , ? , ? )");
 
 			statement.setString(1, user.getNom());
 			statement.setString(2, user.getLogin());
 			statement.setString(3, user.getMdp());
-			statement.setString(4, user.getEmail());
 			
 			statement.executeUpdate();
+			
+			connect.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw new DataBaseException("Impossible d'ajouter l'utilisateur " + user.getNom() + " à la base de données." );
 		}
 
 
