@@ -28,7 +28,7 @@ public class UserDataModel {
 			
  
 			if( res.next()){
-				return new User(res.getString("Nom"), res.getString("Login"), res.getString("Mdp"));
+				return new User(res.getString("Nom"), res.getString("Login"), res.getString("Mdp"), res.getString("Email"));
 			}
 			
 		} catch (SQLException e) {
@@ -43,11 +43,12 @@ public class UserDataModel {
 		PreparedStatement statement = null;		
 		
 		try {
-			statement = connect.prepareStatement("INSERT INTO PROPRIETAIRES VALUES( ? , ? , ? )");
+			statement = connect.prepareStatement("INSERT INTO PROPRIETAIRES VALUES( ? , ? , ?, ? )");
 
 			statement.setString(1, user.getNom());
 			statement.setString(2, user.getLogin());
 			statement.setString(3, user.getMdp());
+			statement.setString(4, user.geteMail());
 			
 			statement.executeUpdate();
 			

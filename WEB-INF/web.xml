@@ -1,0 +1,18 @@
+<web-app>
+
+    <servlet>
+        <servlet-name>connexionManager</servlet-name>
+        <servlet-class>server.ConnexionManager</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>connexionManager</servlet-name>
+        <url-pattern>/authentification</url-pattern>
+    </servlet-mapping>
+	
+	    <servlet-mapping>
+        <servlet-name>connexionManager</servlet-name>
+        <url-pattern>/inscription</url-pattern>
+    </servlet-mapping>
+	
+</web-app>

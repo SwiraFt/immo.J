@@ -16,7 +16,7 @@ public class testDB {
 	@Test (expected = DataBaseException.class)
 	public void testAddUser() throws DataBaseException{
 		UserDataModel userDataModel = new UserDataModel();
-		User user = new User("testUser","testUser","testUser");
+		User user = new User("testUser","testUser","testUser", "testUser@immoJ.fr");
 
 		userDataModel.add(user);
 

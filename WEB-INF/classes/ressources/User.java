@@ -7,13 +7,16 @@ public class User {
 	
 	private String mdp;
 	
+	private String eMail;
+	
 	
 
-	public User(String nom, String login, String mdp) {
+	public User(String nom, String login, String mdp, String eMail) {
 		super();
 		this.nom = nom;
 		this.login = login;
 		this.mdp = mdp;
+		this.eMail = eMail;
 	}
 
 	public String getNom() {
@@ -27,6 +30,15 @@ public class User {
 	public String getLogin() {
 		return login;
 	}
+	
+
+	public String geteMail() {
+		return eMail;
+	}
+
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
+	}
 
 	public void setLogin(String login) {
 		this.login = login;
@@ -39,4 +51,6 @@ public class User {
 	public void setMdp(String mdp) {
 		this.mdp = mdp;
 	}
+
+	
 }
