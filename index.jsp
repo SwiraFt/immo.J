@@ -44,6 +44,16 @@
       </form>
 
     </div>
+	
+	<div>
+	<%
+	String msg = (String) request.getAttribute("msgerreur");
+	System.out.println(request.getAttributeNames() == null ? request.getAttributeNames().nextElement().toString() : "pas d'elem");
+	if(msg != null)
+		out.println(msg);
+	%>
+	
+	</div>
 
 
 
