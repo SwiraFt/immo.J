@@ -9,33 +9,155 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import agencedata.UserDataModel;
+import exceptions.DataBaseException;
 import ressources.User;
 
+@SuppressWarnings("serial")
 public class ConnexionManager extends HttpServlet {
 	private final static String MSG_ERREUR = "msgerreur";
 	private final static String CONNEXION_FILE = "index.jsp";
+	private final static String SPECIAL_CHAR = "- ";
 	PrintWriter out;
 	
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response){
 		
 		String[] parses = request.getRequestURL().toString().split("/"); //On parse l'URL
-		String action = parses[parses.length - 1]; //On récupère l'action demandé dans l'URL
+		String action = parses[parses.length - 1]; //On rÃ©cupÃ¨re l'action demandÃ© dans l'URL
 		
 		if(action.equals("inscription")) //En fonction de cette action on sait si on inscrit ou authentifie l'utilisateur
 			inscrire(request, response);
-		else if(action.equals("authentification"));
+		else if(action.equals("authentification"))
+			connexion(request, response);
 
 		
 	}
 	
 	private void inscrire(HttpServletRequest request,  HttpServletResponse response){
-		if(validationDonnées(request, response)){
-			System.out.println("Inscription ok");
-			request.setAttribute(MSG_ERREUR, "Vous vous êtes bien inscrit, vous pouvez vous connecter");
-			//TODO renvoyer vers la page mon compte et connecter l'user automatiquement
+		if(validationDonnÃ©es(request, response)){
+			UserDataModel userDataModel = new UserDataModel();
+			
+			if(userDataModel.get(request.getParameter("pseudo")) != null){
+				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR +"Le pseudo entrÃ© est dÃ©jÃ  utilisÃ©, merci d'en choisir un diffÃ©rent.");
+			}
+			else{
+				try {
+					userDataModel.add(new User(request.getParameter("nom"),request.getParameter("pseudo"), request.getParameter("mdp"), request.getParameter("email")));
+				} catch (DataBaseException e) {
+					// TODO Auto-generated catch block
+					System.out.println("Erreur lors de l'ajout de l'utilisateur Ã  la base de donnÃ©es");
+					e.printStackTrace();
+				}
+				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Vous vous Ãªtes bien inscrit, vous pouvez vous connecter");
+				//TODO renvoyer vers la page mon compte et connecter l'user automatiquement
+			}
+			
 		}
 		
+		redirect(request, response);
+
+	}
+	
+	private boolean controleNom(String nom, StringBuilder messageErreur){
+		if(nom == null || nom.equals("")){
+			messageErreur.append(SPECIAL_CHAR + "Le nom doit Ãªtre renseignÃ©  </br>");
+			return false;
+		}
+		if(nom.length() < 3){
+			messageErreur.append(SPECIAL_CHAR + "Le nom doit comporter au moins 3 caractÃ¨res </br>");
+			return false;
+		}
+			
+		return true;
+		
+	}
+	
+	private boolean controlePseudo(String pseudo, StringBuilder messageErreur){
+		if(pseudo == null || pseudo.equals("")){
+			messageErreur.append(SPECIAL_CHAR + "L'identifiant doit Ãªtre renseignÃ© </br>");
+			return false;
+		}
+		if(pseudo.length() < 3){
+			messageErreur.append(SPECIAL_CHAR + "L'identifiant doit comporter au moins 3 caractÃ¨res. </br>");
+			return false;
+		}
+
+		return true;
+		
+	}
+	
+	private boolean controleMdp(String mdp, StringBuilder messageErreur){
+		if(mdp == null || mdp.equals("")){
+			messageErreur.append(SPECIAL_CHAR + "Mot de passe vide. </br>");
+			return false;
+		}
+		if(mdp.length() < 3){
+			messageErreur.append(SPECIAL_CHAR + "Le mot de passe doit comporter au moins 5 caractÃ¨res. </br>");
+			return false;
+		}
+
+		return true;
+		
+	}
+	
+	private boolean controleEmail(String eMail, StringBuilder messageErreur){ 
+		if(eMail == null || eMail.equals("")){
+			messageErreur.append(SPECIAL_CHAR + "Adresse Email vide. </br>");
+			return false;
+		}
+		String[] mail = eMail.split("@");//TODO Ajouter les contrÃ´le de caractÃ¨res spÃ©ciaux de la partie gauche
+		if(mail.length != 2){
+			messageErreur.append(SPECIAL_CHAR + "Adresse Email Invalide. </br>");
+			return false;
+		}
+		//TODO Ajouter le ctrl sur la partie droite de l'email
+		return true;
+		
+	}
+	
+	private boolean validationDonnÃ©es(HttpServletRequest request, HttpServletResponse response){
+		StringBuilder messageErreur = new StringBuilder("");
+		
+		if (controleNom(request.getParameter("nom"), messageErreur) & controlePseudo(request.getParameter("pseudo"), messageErreur)
+				& controleMdp(request.getParameter("mdp"), messageErreur) & controleEmail(request.getParameter("email"), messageErreur) )
+			return true;
+		
+		
+		request.setAttribute(MSG_ERREUR, messageErreur.toString());
+		return false;
+	}
+	
+	
+	private void connexion(HttpServletRequest request, HttpServletResponse response){
+		User user;
+		
+		if(request.getParameter("pseudo") == null || request.getParameter("mdp") == null)
+			request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Pseudo ou mot de passe invalide");
+		
+		else{
+			UserDataModel userDataModel = new UserDataModel();
+			user = userDataModel.get(request.getParameter("pseudo"));
+			if (user != null) {
+				System.out.println(user.getLogin());
+				System.out.println(user.getMdp());
+				System.out.println(request.getParameter("mdp"));
+			}
+			if(user == null || !user.getMdp().equals(request.getParameter("mdp"))){
+				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Combinaison Identifiant/Mot de passe invalide");
+			}
+			else{
+				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Vous Ãªtes bien connectÃ©");
+			}
+		}
+		
+		redirect(request, response);
+		
+		
+		
+	}
+
+	private void redirect(HttpServletRequest request, HttpServletResponse response) {
 		RequestDispatcher view = request.getRequestDispatcher(CONNEXION_FILE);
 	    try {
 			view.forward(request, response);
@@ -46,77 +168,9 @@ public class ConnexionManager extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	}
-	
-	private boolean controleNom(String nom, StringBuilder messageErreur){
-		if(nom == null || nom.equals("")){
-			messageErreur.append("Le nom doit être renseigné  </br>");
-			return false;
-		}
-		if(nom.length() < 3){
-			messageErreur.append("Le nom doit comporter au moins 3 carctères </br>");
-			return false;
-		}
-			
-		return true;
 		
 	}
 	
-	private boolean controlePseudo(String pseudo, StringBuilder messageErreur){
-		if(pseudo == null || pseudo.equals("")){
-			messageErreur.append("L'identifiant doit être renseigné </br>");
-			return false;
-		}
-		if(pseudo.length() < 3){
-			messageErreur.append("L'identifiant doit comporter au moins 3 caractères. </br>");
-			return false;
-		}
-
-		return true;
-		
-	}
-	
-	private boolean controleMdp(String mdp, StringBuilder messageErreur){
-		if(mdp == null || mdp.equals("")){
-			messageErreur.append("Mot de passe vide. </br>");
-			return false;
-		}
-		if(mdp.length() < 3){
-			messageErreur.append("Le mot de passe doit comporter au moins 5 caractères. </br>");
-			return false;
-		}
-
-		return true;
-		
-	}
-	
-	private boolean controleEmail(String eMail, StringBuilder messageErreur){ 
-		if(eMail == null || eMail.equals("")){
-			messageErreur.append("Adresse Email vide. </br>");
-			return false;
-		}
-		String[] mail = eMail.split("@");//TODO Ajouter les contrôle de caractères spéciaux de la partie gauche
-		if(mail.length != 2){
-			messageErreur.append("Adresse Email Invalide. </br>");
-			return false;
-		}
-		//TODO Ajouter le ctrl sur la partie droite de l'email
-		return true;
-		
-	}
-	
-	private boolean validationDonnées(HttpServletRequest request, HttpServletResponse response){
-		StringBuilder messageErreur = new StringBuilder("");
-		
-		if (controleNom(request.getParameter("nom"), messageErreur) & controlePseudo(request.getParameter("pseudo"), messageErreur)
-				& controleMdp(request.getParameter("mdp"), messageErreur) & controleEmail(request.getParameter("email"), messageErreur) )
-			return true;
-		
-		
-		request.setAttribute(this.MSG_ERREUR, messageErreur.toString());
-		return false;
-	}
 	
 	
 	

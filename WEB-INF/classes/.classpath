@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="Z:/apache-tomcat/lib/ojdbc6.jar"/>
-	<classpathentry kind="lib" path="Z:/apache-tomcat/webapps/immo.J/WEB-INF/lib/javax.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Amin/Documents/Projet IUT et TP/Apprentissage/ProjetJEE/apache-tomcat/webapps/immo.J/WEB-INF/lib/javax.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Amin/Documents/Projet IUT et TP/Apprentissage/ProjetJEE/apache-tomcat/lib/ojdbc6.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

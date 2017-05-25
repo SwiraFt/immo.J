@@ -16,7 +16,7 @@
         <label for="inputPseudo" class="sr-only">Identifiant</label>
         <input type="text" id="inputPseudo" name="pseudo" class="form-control" placeholder="Identifiant" required autofocus>
         <label for="inputPassword" class="sr-only">Mot de passe</label>
-        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Mot de passe" required>
+        <input type="password" id="inputPassword" name="mdp" class="form-control" placeholder="Mot de passe" required>
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
@@ -42,18 +42,15 @@
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       </form>
-
-    </div>
-	
-	<div>
-	<%
+	<font color="red" style="text-align:center">  
+	  <%
 	String msg = (String) request.getAttribute("msgerreur");
-	System.out.println(request.getAttributeNames() == null ? request.getAttributeNames().nextElement().toString() : "pas d'elem");
 	if(msg != null)
 		out.println(msg);
 	%>
-	
-	</div>
+	</font>
+
+    </div>
 
 
 
