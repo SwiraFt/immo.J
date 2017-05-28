@@ -16,11 +16,11 @@
 
   <div class="container">
 
-      <form class="form-signin" action="creerAppart" method="POST">
+      <form class="form-signin" action="creerappart" method="POST">
         <h2 class="form-signin-heading">Vendre mon appartements</h2>
 
         <div class="form-group">
-        <label for="inputType" class="sr-only">Type du logement</label>
+        <label for="inputType" class="">Type du logement</label>
         <SELECT name="type" size="1">
         <OPTION> Studio </OPTION>
         <OPTION> T1 </OPTION>
@@ -29,11 +29,11 @@
         </SELECT>
         </div>
 
-        <label for="inputAdresse" class="sr-only">Adresse</label>
+        <label for="inputAdresse" class="">Adresse</label>
         <input type="text" id="inputAdresse" name="adresse" class="form-control" placeholder="Ex : 25 rue du Junit Test Case" required autofocus>
 
-        <label for="inputMontant" class="sr-only">Prix de Vente</label>
-        <input type="text" id="inputMontant" name="mdp" class="form-control" placeholder="Ex : 80000" required>
+        <label for="inputMontant" class="">Prix de Vente</label>
+        <input type="text" id="inputMontant" name="montant" class="form-control" placeholder="Ex : 80000" required>
 
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">Mettre en vente</button>

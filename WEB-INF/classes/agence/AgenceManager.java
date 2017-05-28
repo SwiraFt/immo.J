@@ -1,6 +1,7 @@
 package agence;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,7 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import agencedata.AppartementDataModel;
+import exceptions.DataBaseException;
+import ressources.Appartement;
+
+@SuppressWarnings("serial")
 public class AgenceManager extends HttpServlet{
+	private final static String MSG_ERREUR = "msgerreur";
+	private final static String SPECIAL_CHAR = "- ";
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response){
 		String[] parses = request.getRequestURL().toString().split("/"); //On parse l'URL
@@ -29,11 +37,60 @@ public class AgenceManager extends HttpServlet{
 			redirect(request, response, "listeselection");
 			return;
 		}
+		else if(action.equals("creerappart")){
+			ajouterAppartementDB(request);
+			redirect(request, response, "vendreappart");
+			return;
+		}
+		else if(action.equals("supprimerappart")){
+			supprimerAppartmentDB(request);
+			redirect(request, response, "mesappartements");
+			return;
+		}
+		
+		else if(action.equals("envoyerselection")){
+			envoyerSelection(request)
+		}
 		
 		redirect(request, response, "listeappartements");
 	}
 	
 	
+	private void supprimerAppartmentDB(HttpServletRequest request) {
+		int numéro = Integer.valueOf(request.getParameter("numero"));
+		AppartementDataModel appartementDataModel = new AppartementDataModel();
+		appartementDataModel.delete(numéro);		
+	}
+
+
+	private void ajouterAppartementDB(HttpServletRequest request) {
+		try {
+			Integer.valueOf(request.getParameter("montant"));
+		} catch (NumberFormatException e) {
+			request.setAttribute(MSG_ERREUR, SPECIAL_CHAR +"Montant invalide.");
+			return;
+		}
+		
+		if(Integer.valueOf(request.getParameter("montant")) <= 0)
+			request.setAttribute(MSG_ERREUR, SPECIAL_CHAR +"Montant invalide.");
+		else if(request.getParameter("adresse") == null)
+			request.setAttribute(MSG_ERREUR, SPECIAL_CHAR +"Adresse invalide.");
+		else{
+			Date date = new Date();
+			AppartementDataModel appartementDataModel = new AppartementDataModel();
+			try {
+				appartementDataModel.add(new Appartement(-1, request.getParameter("type"), request.getParameter("adresse"), Float.valueOf(request.getParameter("montant")), new java.sql.Date(date.getTime()), (String) request.getSession().getAttribute("login")));
+				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR +"L'appartement a bien été enregistré au numéro : "+ appartementDataModel.getNumOfLastAddedBy( (String) request.getSession().getAttribute("login")) );
+			} catch (NumberFormatException | DataBaseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+	}
+
+
 	private void ajouterAppartementListe(HttpServletRequest request) {
 		String numero = request.getParameter("numero");
 		HttpSession session = request.getSession();

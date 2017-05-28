@@ -110,26 +110,42 @@ public class AppartementDataModel {
 	
 	public int getNumOfLastAddedBy(String login) {
 		PreparedStatement statement = null;
-				
+		int numero = -1 ;
 		try {
-			statement = connect.prepareStatement("SELECT MAX(numero) FROM APPARTEMENTS WHERE loginprop = ?");
-			
+			statement = connect.prepareStatement("SELECT numero FROM APPARTEMENTS WHERE loginprop = ?");
+						
 			statement.setString(1, login);
 			
 			ResultSet res = statement.executeQuery();
 			
- 
-			if( res.next()){
-				return res.getInt("numero");
-			}
 			
+			while(res.next()){
+				if (res.getInt("numero") > numero)
+					numero = res.getInt("numero");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
-		return -1;
+		return numero;
+	}
+
+	public void delete(int numéro) {
+		PreparedStatement statement = null;
+		try {
+			statement = connect.prepareStatement("DELETE FROM APPARTEMENTS WHERE numero = ?");
+			
+			statement.setInt(1, numéro);
+			
+			statement.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 }

@@ -25,6 +25,11 @@
         <jsp-file>/jsp/vendreAppart.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>mesAppartements</servlet-name>
+        <jsp-file>/jsp/mesAppartements.jsp</jsp-file>
+    </servlet>
+
 	<servlet-mapping>
         <servlet-name>listeAppartements</servlet-name>
         <url-pattern>/listeappartements</url-pattern>
@@ -69,5 +74,21 @@
   <servlet-name>vendreAppart</servlet-name>
   <url-pattern>/vendreappart</url-pattern>
 </servlet-mapping>
+
+<servlet-mapping>
+  <servlet-name>agenceManager</servlet-name>
+  <url-pattern>/creerappart</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+  <servlet-name>agenceManager</servlet-name>
+  <url-pattern>/supprimerappart</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+  <servlet-name>mesAppartements</servlet-name>
+  <url-pattern>/mesappartements</url-pattern>
+</servlet-mapping>
+
 
 </web-app>
