@@ -11,6 +11,16 @@
 	
 	 <div class="container">
 	 
+	 <form method="get" action="listeappartements">
+		<button class="btn btn-lg btn-primary btn-block" type="submit">Acceder a la liste des appartements</button>
+	</form>
+	 
+	 
+	 
+	 </div>
+	
+	 <div class="container">
+	 
       <form class="form-signin" action="authentification" method="POST">
         <h2 class="form-signin-heading">Se connecter</h2>
         <label for="inputPseudo" class="sr-only">Identifiant</label>

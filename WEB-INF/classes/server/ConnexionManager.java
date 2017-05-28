@@ -17,27 +17,28 @@ import ressources.User;
 public class ConnexionManager extends HttpServlet {
 	private final static String MSG_ERREUR = "msgerreur";
 	private final static String CONNEXION_FILE = "index.jsp";
+	private final static String CONNEXION_OK = "listeappartements";
 	private final static String SPECIAL_CHAR = "- ";
 	PrintWriter out;
-	
-	
+
+
 	public void doPost(HttpServletRequest request, HttpServletResponse response){
-		
+
 		String[] parses = request.getRequestURL().toString().split("/"); //On parse l'URL
 		String action = parses[parses.length - 1]; //On récupère l'action demandé dans l'URL
-		
+
 		if(action.equals("inscription")) //En fonction de cette action on sait si on inscrit ou authentifie l'utilisateur
 			inscrire(request, response);
 		else if(action.equals("authentification"))
 			connexion(request, response);
 
-		
+
 	}
-	
+
 	private void inscrire(HttpServletRequest request,  HttpServletResponse response){
 		if(validationDonnées(request, response)){
 			UserDataModel userDataModel = new UserDataModel();
-			
+
 			if(userDataModel.get(request.getParameter("pseudo")) != null){
 				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR +"Le pseudo entré est déjà utilisé, merci d'en choisir un différent.");
 			}
@@ -52,13 +53,13 @@ public class ConnexionManager extends HttpServlet {
 				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Vous vous êtes bien inscrit, vous pouvez vous connecter");
 				//TODO renvoyer vers la page mon compte et connecter l'user automatiquement
 			}
-			
+
 		}
-		
-		redirect(request, response);
+
+		redirect(request, response, CONNEXION_FILE);
 
 	}
-	
+
 	private boolean controleNom(String nom, StringBuilder messageErreur){
 		if(nom == null || nom.equals("")){
 			messageErreur.append(SPECIAL_CHAR + "Le nom doit être renseigné  </br>");
@@ -68,11 +69,11 @@ public class ConnexionManager extends HttpServlet {
 			messageErreur.append(SPECIAL_CHAR + "Le nom doit comporter au moins 3 caractères </br>");
 			return false;
 		}
-			
+
 		return true;
-		
+
 	}
-	
+
 	private boolean controlePseudo(String pseudo, StringBuilder messageErreur){
 		if(pseudo == null || pseudo.equals("")){
 			messageErreur.append(SPECIAL_CHAR + "L'identifiant doit être renseigné </br>");
@@ -84,9 +85,9 @@ public class ConnexionManager extends HttpServlet {
 		}
 
 		return true;
-		
+
 	}
-	
+
 	private boolean controleMdp(String mdp, StringBuilder messageErreur){
 		if(mdp == null || mdp.equals("")){
 			messageErreur.append(SPECIAL_CHAR + "Mot de passe vide. </br>");
@@ -98,10 +99,10 @@ public class ConnexionManager extends HttpServlet {
 		}
 
 		return true;
-		
+
 	}
-	
-	private boolean controleEmail(String eMail, StringBuilder messageErreur){ 
+
+	private boolean controleEmail(String eMail, StringBuilder messageErreur){
 		if(eMail == null || eMail.equals("")){
 			messageErreur.append(SPECIAL_CHAR + "Adresse Email vide. </br>");
 			return false;
@@ -113,52 +114,55 @@ public class ConnexionManager extends HttpServlet {
 		}
 		//TODO Ajouter le ctrl sur la partie droite de l'email
 		return true;
-		
+
 	}
-	
+
 	private boolean validationDonnées(HttpServletRequest request, HttpServletResponse response){
 		StringBuilder messageErreur = new StringBuilder("");
-		
+
 		if (controleNom(request.getParameter("nom"), messageErreur) & controlePseudo(request.getParameter("pseudo"), messageErreur)
 				& controleMdp(request.getParameter("mdp"), messageErreur) & controleEmail(request.getParameter("email"), messageErreur) )
 			return true;
-		
-		
+
+
 		request.setAttribute(MSG_ERREUR, messageErreur.toString());
 		return false;
 	}
-	
-	
+
+
 	private void connexion(HttpServletRequest request, HttpServletResponse response){
 		User user;
-		
-		if(request.getParameter("pseudo") == null || request.getParameter("mdp") == null)
+
+		if(request.getParameter("pseudo") == null || request.getParameter("mdp") == null){
 			request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Pseudo ou mot de passe invalide");
-		
+			redirect(request, response, CONNEXION_FILE);
+		}
+
 		else{
 			UserDataModel userDataModel = new UserDataModel();
 			user = userDataModel.get(request.getParameter("pseudo"));
-			if (user != null) {
-				System.out.println(user.getLogin());
-				System.out.println(user.getMdp());
-				System.out.println(request.getParameter("mdp"));
-			}
 			if(user == null || !user.getMdp().equals(request.getParameter("mdp"))){
 				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Combinaison Identifiant/Mot de passe invalide");
+				redirect(request, response, CONNEXION_FILE);
 			}
 			else{
-				request.setAttribute(MSG_ERREUR, SPECIAL_CHAR + "Vous êtes bien connecté");
+				try {
+					response.sendRedirect(CONNEXION_OK);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-		
-		redirect(request, response);
-		
-		
-		
+
+
+
+
+
 	}
 
-	private void redirect(HttpServletRequest request, HttpServletResponse response) {
-		RequestDispatcher view = request.getRequestDispatcher(CONNEXION_FILE);
+	private void redirect(HttpServletRequest request, HttpServletResponse response, String route) {
+		RequestDispatcher view = request.getRequestDispatcher(route);
 	    try {
 			view.forward(request, response);
 		} catch (ServletException e) {
@@ -168,11 +172,11 @@ public class ConnexionManager extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
-	
-	
-	
+
+
+
+
+
 }

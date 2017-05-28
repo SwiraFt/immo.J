@@ -4,15 +4,60 @@
         <servlet-name>connexionManager</servlet-name>
         <servlet-class>server.ConnexionManager</servlet-class>
     </servlet>
-    
+
+	<servlet>
+        <servlet-name>listeAppartements</servlet-name>
+        <jsp-file>/jsp/listeAppartements.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>agenceManager</servlet-name>
+        <servlet-class>agence.AgenceManager</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>listeSelection</servlet-name>
+        <jsp-file>/jsp/listeSelection.jsp</jsp-file>
+    </servlet>
+
+	<servlet-mapping>
+        <servlet-name>listeAppartements</servlet-name>
+        <url-pattern>/listeappartements</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>connexionManager</servlet-name>
         <url-pattern>/authentification</url-pattern>
     </servlet-mapping>
-	
+
 	    <servlet-mapping>
         <servlet-name>connexionManager</servlet-name>
         <url-pattern>/inscription</url-pattern>
     </servlet-mapping>
-	
+
+    <servlet-mapping>
+      <servlet-name>agenceManager</servlet-name>
+      <url-pattern>/appartByNum</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+     <servlet-name>agenceManager</servlet-name>
+     <url-pattern>/appartByType</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>agenceManager</servlet-name>
+    <url-pattern>/ajoutAppartListe</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+   <servlet-name>agenceManager</servlet-name>
+   <url-pattern>/supprimerAppartListe</url-pattern>
+</servlet-mapping>
+
+ <servlet-mapping>
+   <servlet-name>listeSelection</servlet-name>
+   <url-pattern>/listeselection</url-pattern>
+</servlet-mapping>
+
 </web-app>

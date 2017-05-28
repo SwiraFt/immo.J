@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import exceptions.DataBaseException;
 import ressources.Appartement;
@@ -27,7 +28,7 @@ public class AppartementDataModel {
 			
  
 			if( res.next()){
-				return new Appartement(res.getString("TypeAppart"), res.getString("Adresse"), res.getFloat("MontantVente"), res.getDate("DatePublication"), res.getString("LoginProp"));
+				return new Appartement(res.getInt("numero"), res.getString("TypeAppart"), res.getString("Adresse"), res.getFloat("MontantVente"), res.getDate("DatePublication"), res.getString("LoginProp"));
 			}
 			
 		} catch (SQLException e) {
@@ -35,7 +36,54 @@ public class AppartementDataModel {
 			e.printStackTrace();
 		}
 		
+		
 		return null;
+	}
+	
+	public ArrayList<Appartement> getAll(){
+		PreparedStatement statement = null;
+		ArrayList<Appartement> appartements = new ArrayList<Appartement>();
+		
+		try {
+			statement = connect.prepareStatement("SELECT * FROM APPARTEMENTS WHERE numero is not null");
+			
+			ResultSet res = statement.executeQuery();
+			
+			while(res.next()){
+				appartements.add(new Appartement(res.getInt("numero"), res.getString("TypeAppart"), res.getString("Adresse"), res.getFloat("MontantVente"), res.getDate("DatePublication"), res.getString("LoginProp")));
+			}	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return appartements;
+	
+	}
+	
+	public ArrayList<Appartement> getbyType(String type){
+		PreparedStatement statement = null;
+		ArrayList<Appartement> appartements = new ArrayList<Appartement>();
+		
+		try {
+			statement = connect.prepareStatement("SELECT * FROM APPARTEMENTS WHERE typeappart = ?");
+			
+			statement.setString(1, type);
+			
+			ResultSet res = statement.executeQuery();
+			
+			while(res.next()){
+				appartements.add(new Appartement(res.getInt("numero"), res.getString("TypeAppart"), res.getString("Adresse"), res.getFloat("MontantVente"), res.getDate("DatePublication"), res.getString("LoginProp")));
+			}	
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return appartements;
+	
 	}
 
 	public void add(Appartement appartement) throws DataBaseException{
