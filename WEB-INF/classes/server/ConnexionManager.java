@@ -35,6 +35,24 @@ public class ConnexionManager extends HttpServlet {
 
 
 	}
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response){
+
+		String[] parses = request.getRequestURL().toString().split("/"); //On parse l'URL
+		String action = parses[parses.length - 1]; //On récupère l'action demandé dans l'URL
+
+		if(action.equals("deconnexion")){
+			request.getSession().invalidate();
+			try {
+				response.sendRedirect(CONNEXION_FILE);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+
+	}
 
 	private void inscrire(HttpServletRequest request,  HttpServletResponse response){
 		if(validationDonnées(request, response)){

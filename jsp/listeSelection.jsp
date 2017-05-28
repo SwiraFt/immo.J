@@ -17,7 +17,8 @@
 
     <nav  class="navbar navbar-default">
 
-	<form class="navbar-form navbar-left" action="envoyerSelection" method="POST">
+	<form class="navbar-form navbar-left" action="envoyerselection" method="POST">
+        <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email" required autofocus>
         <button type="submit" class="btn btn-default">Valider ma selection</button>
       </form>
 	</nav>

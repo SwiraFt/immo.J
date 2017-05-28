@@ -90,5 +90,15 @@
   <url-pattern>/mesappartements</url-pattern>
 </servlet-mapping>
 
+<servlet-mapping>
+  <servlet-name>agenceManager</servlet-name>
+  <url-pattern>/envoyerselection</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+  <servlet-name>connexionManager</servlet-name>
+  <url-pattern>/deconnexion</url-pattern>
+</servlet-mapping>
+
 
 </web-app>

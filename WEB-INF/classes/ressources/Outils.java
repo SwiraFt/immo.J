@@ -12,4 +12,9 @@ public class Outils {
 
 		return false;
 	}
+
+	public static void envoyerMail(String adresse, String message) {
+		System.out.println("Mail de selection envoyé à l'adresse : "+ adresse + "\n Contenu : \n" + message);
+		
+	}
 }

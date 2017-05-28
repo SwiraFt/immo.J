@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import agencedata.AppartementDataModel;
 import exceptions.DataBaseException;
 import ressources.Appartement;
+import ressources.Outils;
 
 @SuppressWarnings("serial")
 public class AgenceManager extends HttpServlet{
@@ -49,13 +50,45 @@ public class AgenceManager extends HttpServlet{
 		}
 		
 		else if(action.equals("envoyerselection")){
-			envoyerSelection(request)
+			envoyerSelection(request);
+			
 		}
 		
 		redirect(request, response, "listeappartements");
 	}
 	
 	
+	private void envoyerSelection(HttpServletRequest request) {
+		if(request.getSession().getAttribute("listeApparts") == null || request.getParameter("email") == null)
+			return;
+		StringBuilder sb = new StringBuilder();
+		AppartementDataModel appartementDataModel = new AppartementDataModel();
+		String[] liste = ((String) request.getSession().getAttribute("listeApparts")).split(",");
+		if(liste == null)
+			return;
+		
+		for(int i= 0; i < liste.length; i++){
+			Appartement appart;
+			try {
+				appart = appartementDataModel.get(Integer.valueOf(liste[i]));
+			} catch (NumberFormatException e) {
+				continue;
+			}
+			if(appart == null)
+				continue;
+			sb.append("Appartement numéro : " + appart.getNumero()+ "\n");
+			sb.append("Adresse : " + appart.getAdresse()+ "\n");
+			sb.append("Prix de Vente : " + appart.getMontantVente() + "\n");
+			sb.append("Proprietaire : " + appart.getLoginProp() + "\n");
+			sb.append("    ---------------------------------------    ");
+		}
+		
+		Outils.envoyerMail(request.getParameter("email") , sb.toString());
+		
+		
+		
+	}
+
 	private void supprimerAppartmentDB(HttpServletRequest request) {
 		int numéro = Integer.valueOf(request.getParameter("numero"));
 		AppartementDataModel appartementDataModel = new AppartementDataModel();

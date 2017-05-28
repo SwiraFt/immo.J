@@ -20,6 +20,8 @@
 							 	out.println("<li class=\"active\"><a href=\"listeselection\">Ma selection</a></li>");
 							 %>
             </ul>
+							<a class="navbar-right" href="deconnexion" >Se deconnecter</span></a>
+
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
