@@ -106,7 +106,30 @@ public class AppartementDataModel {
 			e.printStackTrace();
 			throw new DataBaseException("Impossible d'ajouter l'appartement à la base de données." );
 		}
-
-
 	}
+	
+	public int getNumOfLastAddedBy(String login) {
+		PreparedStatement statement = null;
+				
+		try {
+			statement = connect.prepareStatement("SELECT MAX(numero) FROM APPARTEMENTS WHERE loginprop = ?");
+			
+			statement.setString(1, login);
+			
+			ResultSet res = statement.executeQuery();
+			
+ 
+			if( res.next()){
+				return res.getInt("numero");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return -1;
+	}
+	
 }

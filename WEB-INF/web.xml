@@ -20,6 +20,11 @@
         <jsp-file>/jsp/listeSelection.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>vendreAppart</servlet-name>
+        <jsp-file>/jsp/vendreAppart.jsp</jsp-file>
+    </servlet>
+
 	<servlet-mapping>
         <servlet-name>listeAppartements</servlet-name>
         <url-pattern>/listeappartements</url-pattern>
@@ -58,6 +63,11 @@
  <servlet-mapping>
    <servlet-name>listeSelection</servlet-name>
    <url-pattern>/listeselection</url-pattern>
+</servlet-mapping>
+
+<servlet-mapping>
+  <servlet-name>vendreAppart</servlet-name>
+  <url-pattern>/vendreappart</url-pattern>
 </servlet-mapping>
 
 </web-app>

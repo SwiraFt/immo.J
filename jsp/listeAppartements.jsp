@@ -25,21 +25,31 @@
       </form>
 
 	<form class="navbar-form navbar-left" action="appartByType" method="POST">
-        <div class="form-group">
-			<SELECT name="type" size="1">
-				<OPTION> Studio </OPTION>
-				<OPTION> T1 </OPTION>
-				<OPTION> T2 </OPTION>
-				<OPTION> T3 </OPTION>
-			</SELECT>
-        </div>
+    <div class="form-group">
+    <SELECT name="type" size="1">
+    <OPTION> Studio </OPTION>
+    <OPTION> T1 </OPTION>
+    <OPTION> T2 </OPTION>
+    <OPTION> T3 </OPTION>
+    </SELECT>
+    </div>
         <button type="submit" class="btn btn-default">Rechercher par type</button>
       </form>
 
       <form class="navbar-form navbar-left" action="listeappartements" method="POST">
-             <button type="submit" class="btn btn-default">Reinitialiser</button>
-           </form>
+          <button type="submit" class="btn btn-default">Reinitialiser</button>
+      </form>
 
+      <%
+      if(request.getSession().getAttribute("login") != null){
+        out.println("<form class=\"navbar-form navbar-right\" action=\"mesappartements\" method=\"POST\">");
+        out.println("<button type=\"submit\" class=\"btn btn-primary\">Mes appartements</button>");
+        out.println("</form>");
+        out.println("<form class=\"navbar-form navbar-right\" action=\"vendreappart\" method=\"POST\">");
+        out.println("<button type=\"submit\" class=\"btn btn-primary\">Vendre mon appartements</button>");
+        out.println("</form>");
+      }
+      %>
 
 	</nav>
 

@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import agencedata.UserDataModel;
 import exceptions.DataBaseException;
@@ -147,6 +148,8 @@ public class ConnexionManager extends HttpServlet {
 			}
 			else{
 				try {
+					HttpSession session = request.getSession();
+					session.setAttribute("login", request.getParameter("pseudo"));
 					response.sendRedirect(CONNEXION_OK);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
